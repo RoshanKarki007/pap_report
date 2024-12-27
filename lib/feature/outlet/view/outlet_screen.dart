@@ -4,8 +4,9 @@ import 'package:pap_report/constants/colors.dart';
 import 'package:pap_report/feature/outlet/bloc/outlet_bloc.dart';
 import 'package:pap_report/feature/outlet/model/outlet_model.dart';
 import 'package:pap_report/utils/ui_state_handler/ui_state_handler.dart';
+import 'package:pap_report/widgets/custom_error_widget.dart';
+import 'package:pap_report/widgets/custom_loading_widget.dart';
 import 'package:pap_report/widgets/custom_pie_chart.dart';
-import 'package:shimmer/shimmer.dart';
 
 class OutletScreen extends StatelessWidget {
   const OutletScreen({super.key});
@@ -14,19 +15,8 @@ class OutletScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return UiStateHandler<OutletModel, OutletBloc>(
       emptyWidget: Text('No data'),
-      errorWidget: (error) => Text(error.message),
-      loadingWidget: Shimmer.fromColors(
-        baseColor: Colors.grey[300]!,
-        highlightColor: Colors.grey[100]!,
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12.r),
-            color: Colors.white,
-          ),
-          height: 350.h,
-          width: double.infinity,
-        ),
-      ),
+      errorWidget: (error) => CustomErrorWidget(error: error.message),
+      loadingWidget: CustomLoadingWidget(),
       onSuccess: (onSuccess) => Column(
         children: [
           Container(

@@ -6,11 +6,13 @@ import 'package:pap_report/constants/colors.dart';
 import 'package:pap_report/feature/outlet/model/outlet_model.dart';
 import 'package:pap_report/feature/transaction/bloc/transaction_bloc.dart';
 import 'package:pap_report/feature/transaction/model/transaction_model.dart';
+import 'package:pap_report/feature/transaction/widgets/info_tile.dart';
 import 'package:pap_report/utils/ui_state_handler/ui_state_handler.dart';
 import 'package:pap_report/widgets/custom_donut_chart.dart';
+import 'package:pap_report/widgets/custom_error_widget.dart';
 import 'package:pap_report/widgets/custom_expansion_tile.dart';
+import 'package:pap_report/widgets/custom_loading_widget.dart';
 import 'package:pap_report/widgets/custom_widget_switcher.dart';
-import 'package:shimmer/shimmer.dart';
 
 class TransactionScreen extends StatelessWidget {
   const TransactionScreen({super.key});
@@ -19,21 +21,15 @@ class TransactionScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return UiStateHandler<TransactionModel, TransactionBloc>(
       emptyWidget: Text('No data'),
-      errorWidget: (error) => Text(error.message),
+      errorWidget: (error) => Padding(
+        padding: EdgeInsets.only(top: 10.h),
+        child: CustomErrorWidget(
+          error: error.message,
+        ),
+      ),
       loadingWidget: Padding(
         padding: EdgeInsets.only(top: 10.h),
-        child: Shimmer.fromColors(
-          baseColor: Colors.grey[300]!,
-          highlightColor: Colors.grey[100]!,
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12.r),
-              color: Colors.white,
-            ),
-            height: 390.h,
-            width: double.infinity,
-          ),
-        ),
+        child: CustomLoadingWidget(),
       ),
       onSuccess: (onSuccess) => Padding(
         padding: EdgeInsets.only(top: 10.h),
@@ -53,7 +49,7 @@ class TransactionScreen extends StatelessWidget {
                     padding: EdgeInsets.zero,
                     physics: NeverScrollableScrollPhysics(),
                     itemBuilder: (context, index) => InfoListtile(
-                          color: getGraphColor(index),
+                          color: ColorConstant().getGraphColor(index),
                           title: onSuccess.data!.items[index].type!.toString(),
                           value: onSuccess.data!.items[index].value!
                               .toInt()
@@ -74,7 +70,7 @@ class TransactionScreen extends StatelessWidget {
                         itemBuilder: (context, index) {
                           var newIndex = 4 + index;
                           return InfoListtile(
-                            color: getGraphColor(newIndex),
+                            color: ColorConstant().getGraphColor(newIndex),
                             title: onSuccess.data!.items[newIndex].type!
                                 .toString(),
                             value: onSuccess.data!.items[newIndex].value!
@@ -143,75 +139,5 @@ class TransactionScreen extends StatelessWidget {
         ),
       ),
     );
-  }
-}
-
-class InfoListtile extends StatelessWidget {
-  final Color color;
-  final String title;
-  final String value;
-  const InfoListtile({
-    super.key,
-    required this.color,
-    required this.title,
-    required this.value,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        decoration: BoxDecoration(
-            color: color, borderRadius: BorderRadius.circular(15.r)),
-        padding: EdgeInsets.symmetric(horizontal: 10.h, vertical: 12.h),
-        child: Row(children: [
-          Container(
-            height: 12.r,
-            width: 12.r,
-            decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(
-                    width: 2, color: ColorConstant.whiteColor.withAlpha(180))),
-          ),
-          SizedBox(width: 5.w),
-          Expanded(
-              child: Text(
-            title,
-            maxLines: 1,
-            style: TextStyle(
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w500,
-                overflow: TextOverflow.ellipsis,
-                color: ColorConstant.normalGreyText),
-          )),
-          Container(
-              alignment: Alignment.center,
-              padding: EdgeInsets.symmetric(vertical: 5.h),
-              constraints: BoxConstraints(minWidth: 80.w),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20.r),
-                  color: ColorConstant.whiteColor.withAlpha(180)),
-              child: Text(
-                value,
-                maxLines: 1,
-                style: TextStyle(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w400,
-                    overflow: TextOverflow.ellipsis,
-                    color: ColorConstant.normalGreyText.withAlpha(200)),
-              ))
-        ]));
-  }
-}
-
-getGraphColor(int index) {
-  var colorList = ColorConstant.graphColorList;
-  int listLength = colorList.length;
-  if (index < listLength) {
-    return colorList[index];
-  } else {
-    int wrappedIndex = index % listLength;
-    Color baseColor = colorList[wrappedIndex];
-
-    return ColorConstant().darkenColor(baseColor);
   }
 }

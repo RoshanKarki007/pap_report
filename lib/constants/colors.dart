@@ -35,7 +35,7 @@ class ColorConstant {
     graphColor5,
   ];
 
-  Color darkenColor(Color color, [double amount = 0.1]) {
+  Color _darkenColor(Color color, [double amount = 0.1]) {
     assert(amount >= 0 && amount <= 1, 'Amount should be between 0 and 1');
     final factor = 1 - amount;
     return Color.fromARGB(
@@ -44,5 +44,18 @@ class ColorConstant {
       (color.green * factor).clamp(0, 255).toInt(),
       (color.blue * factor).clamp(0, 255).toInt(),
     );
+  }
+
+  Color getGraphColor(int index) {
+    var colorList = ColorConstant.graphColorList;
+    int listLength = colorList.length;
+    if (index < listLength) {
+      return colorList[index];
+    } else {
+      int wrappedIndex = index % listLength;
+      Color baseColor = colorList[wrappedIndex];
+
+      return ColorConstant()._darkenColor(baseColor);
+    }
   }
 }

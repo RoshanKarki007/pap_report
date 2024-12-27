@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pap_report/constants/colors.dart';
-import 'package:pap_report/feature/transaction/view/transaction_screen.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class CustomSemiDonutChart<T> extends StatefulWidget {
@@ -67,14 +66,15 @@ class _CustomSemiDonutChartState<T> extends State<CustomSemiDonutChart<T>> {
                       dataSource: widget.data,
                       xValueMapper: widget.xValueMapper,
                       yValueMapper: widget.yValueMapper,
-                      pointColorMapper: (datum, index) => getGraphColor(index),
+                      pointColorMapper: (datum, index) =>
+                          ColorConstant().getGraphColor(index),
                       dataLabelMapper: (datum, index) => '',
                       dataLabelSettings:
                           const DataLabelSettings(isVisible: true),
-                      radius: '90%', // Adjust the size of the donut
-                      innerRadius: '60%', // Control the inner circle radius
-                      startAngle: 270, // Start angle for the semi-donut
-                      endAngle: 90, // End angle for the semi-donut
+                      radius: '90%',
+                      innerRadius: '60%',
+                      startAngle: 270,
+                      endAngle: 90,
                     ),
                   ],
                 ),

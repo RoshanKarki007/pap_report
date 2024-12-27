@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pap_report/utils/custom_toast.dart';
 import 'package:pap_report/utils/generic_state/states/states.dart';
 
 class UiStateHandler<T, B extends BlocBase<GenericState<T>>>
@@ -22,9 +23,7 @@ class UiStateHandler<T, B extends BlocBase<GenericState<T>>>
     return BlocListener<B, GenericState<T>>(
       listener: (context, state) {
         if (state is Error<T>) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Error: ${state.message}')),
-          );
+          CustomToast.instance.showCustomErrorToast('Error: ${state.message}');
         }
       },
       child: BlocBuilder<B, GenericState<T>>(

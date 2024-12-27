@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pap_report/constants/colors.dart';
-import 'package:pap_report/feature/transaction/view/transaction_screen.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class CustomBarChart<T> extends StatelessWidget {
@@ -39,7 +38,8 @@ class CustomBarChart<T> extends StatelessWidget {
               dataSource: data,
               xValueMapper: xValueMapper,
               yValueMapper: yValueMapper,
-              pointColorMapper: (datum, index) => getGraphColor(index),
+              pointColorMapper: (datum, index) =>
+                  ColorConstant().getGraphColor(index),
               dataLabelMapper: (datum, index) => '',
               dataLabelSettings: const DataLabelSettings(isVisible: true),
             ),

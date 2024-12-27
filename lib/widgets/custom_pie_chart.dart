@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pap_report/constants/colors.dart';
-import 'package:pap_report/feature/transaction/view/transaction_screen.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class CustomPieChart<T> extends StatelessWidget {
@@ -40,7 +39,8 @@ class CustomPieChart<T> extends StatelessWidget {
             tooltipBehavior: TooltipBehavior(enable: true),
             series: <CircularSeries>[
               PieSeries<T, String>(
-                  pointColorMapper: (datum, index) => getGraphColor(index),
+                  pointColorMapper: (datum, index) =>
+                      ColorConstant().getGraphColor(index),
                   dataLabelMapper: (datum, index) => '',
                   dataSource: data,
                   xValueMapper: xValueMapper,

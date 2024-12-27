@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pap_report/feature/outlet/bloc/outlet_event.dart';
 import 'package:pap_report/feature/outlet/model/outlet_model.dart';
 import 'package:pap_report/feature/outlet/repository/repo.dart';
+import 'package:pap_report/utils/api_exceptions.dart';
 import 'package:pap_report/utils/generic_state/states/states.dart';
 
 class OutletBloc extends Bloc<OutletEvent, GenericState<OutletModel>> {
@@ -17,6 +18,8 @@ class OutletBloc extends Bloc<OutletEvent, GenericState<OutletModel>> {
     try {
       final transaction = await _repo.getoutlet();
       emit(Success(transaction));
+    } on ApiException catch (error) {
+      emit(Error(error.message.toString(), statusCode: error.statusCode));
     } catch (e) {
       emit(Error(e.toString()));
     }
